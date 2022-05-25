@@ -13,6 +13,7 @@ public class VesselInputHandler : MonoBehaviour
 
     public Vector2 MoveInput { get; private set; }
     public bool JumpInput { get; private set; }
+    public bool AttackInput { get; private set; }
 
     private void Awake()
     {
@@ -64,5 +65,6 @@ public class VesselInputHandler : MonoBehaviour
 
     private void OnAttackInput(InputAction.CallbackContext context)
     {
+        AttackInput = context.ReadValue<float>() == 1;
     }
 }

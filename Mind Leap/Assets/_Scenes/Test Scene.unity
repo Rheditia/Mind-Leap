@@ -1111,8 +1111,9 @@ GameObject:
   - component: {fileID: 1523469456}
   - component: {fileID: 1523469453}
   - component: {fileID: 1523469455}
-  m_Layer: 0
-  m_Name: Player
+  - component: {fileID: 1523469457}
+  m_Layer: 7
+  m_Name: Vessel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1260,6 +1261,24 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1523469457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1523469449}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd6c161161178174090e70451663c99d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackDelayDuration: 0.4
+  attackOffset: {x: 0.35, y: 0.25, z: 0}
+  attackRadius: 0.45
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 128
 --- !u!1 &1843873209
 GameObject:
   m_ObjectHideFlags: 0
@@ -1301,7 +1320,7 @@ GameObject:
   - component: {fileID: 1957993252}
   - component: {fileID: 1957993253}
   m_Layer: 0
-  m_Name: Player GFX
+  m_Name: Vessel GFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
