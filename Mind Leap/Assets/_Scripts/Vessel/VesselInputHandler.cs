@@ -11,6 +11,8 @@ public class VesselInputHandler : MonoBehaviour
     InputAction jumpAction;
     InputAction attackAction;
 
+    public Vector2 MoveInput { get; private set; }
+
     private void Awake()
     {
         input = GetComponent<PlayerInput>();
@@ -51,16 +53,14 @@ public class VesselInputHandler : MonoBehaviour
 
     private void OnMoveInput(InputAction.CallbackContext context)
     {
-        Debug.Log(context.ReadValue<Vector2>());
+        MoveInput = context.ReadValue<Vector2>();
     }
 
     private void OnJumpInput(InputAction.CallbackContext context)
     {
-        Debug.Log(context.ReadValue<float>());
     }
 
     private void OnAttackInput(InputAction.CallbackContext context)
     {
-        Debug.Log(context.ReadValue<float>());
     }
 }
