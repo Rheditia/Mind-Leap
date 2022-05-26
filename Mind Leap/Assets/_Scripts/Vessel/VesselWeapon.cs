@@ -24,12 +24,6 @@ public class VesselWeapon : MonoBehaviour
         anim = GetComponent<Animator>();
     }
 
-    private void Start()
-    {
-        // TODO: Move to the method that handle possession
-        gameObject.layer = LayerMask.NameToLayer("Player");
-    }
-
     private void Update()
     {
         if(attackDelayCountdown > 0) { attackDelayCountdown -= Time.deltaTime; }

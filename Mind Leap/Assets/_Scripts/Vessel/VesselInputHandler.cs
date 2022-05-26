@@ -10,10 +10,12 @@ public class VesselInputHandler : MonoBehaviour
     InputAction moveAction;
     InputAction jumpAction;
     InputAction attackAction;
+    InputAction releaseAction;
 
     public Vector2 MoveInput { get; private set; }
     public bool JumpInput { get; private set; }
     public bool AttackInput { get; private set; }
+    public bool ReleaseInput { get; private set; }
 
     private void Awake()
     {
@@ -21,9 +23,10 @@ public class VesselInputHandler : MonoBehaviour
         moveAction = input.actions["Move"];
         jumpAction = input.actions["Jump"];
         attackAction = input.actions["Attack"];
+        releaseAction = input.actions["Release"];
     }
 
-    private void OnEnable()
+    public void EnableControl()
     {
         moveAction.started += OnMoveInput;
         moveAction.performed += OnMoveInput;
@@ -36,9 +39,13 @@ public class VesselInputHandler : MonoBehaviour
         attackAction.started += OnAttackInput;
         attackAction.performed += OnAttackInput;
         attackAction.canceled += OnAttackInput;
+
+        releaseAction.started += OnReleaseInput;
+        releaseAction.performed += OnReleaseInput;
+        releaseAction.canceled += OnReleaseInput;
     }
 
-    private void OnDisable()
+    public void DisableControl()
     {
         moveAction.started -= OnMoveInput;
         moveAction.performed -= OnMoveInput;
@@ -51,6 +58,15 @@ public class VesselInputHandler : MonoBehaviour
         attackAction.started -= OnAttackInput;
         attackAction.performed -= OnAttackInput;
         attackAction.canceled -= OnAttackInput;
+
+        releaseAction.started -= OnReleaseInput;
+        releaseAction.performed += OnReleaseInput;
+        releaseAction.canceled += OnReleaseInput;
+
+        MoveInput = Vector2.zero;
+        JumpInput = false;
+        AttackInput = false;
+        ReleaseInput = false;
     }
 
     private void OnMoveInput(InputAction.CallbackContext context)
@@ -66,5 +82,10 @@ public class VesselInputHandler : MonoBehaviour
     private void OnAttackInput(InputAction.CallbackContext context)
     {
         AttackInput = context.ReadValue<float>() == 1;
+    }
+
+    private void OnReleaseInput(InputAction.CallbackContext context)
+    {
+        ReleaseInput = context.ReadValue<float>() == 1;
     }
 }
