@@ -5,20 +5,22 @@ using UnityEngine;
 
 public class VesselWeapon : MonoBehaviour
 {
-    VesselInputHandler input;
+    VesselInputHandler inputHandler;
     Animator anim;
 
+    [Header("Checks")]
     [SerializeField] Vector3 attackOffset;
     [SerializeField] float attackRadius;
     [SerializeField] LayerMask enemyMask;
 
+    [Header("Stats")]
     [SerializeField] float attackDelayDuration = 1f;
     private float attackDelayCountdown;
     private bool attackDelay => attackDelayCountdown <= 0;
 
     private void Awake()
     {
-        input = GetComponent<VesselInputHandler>();
+        inputHandler = GetComponent<VesselInputHandler>();
         anim = GetComponent<Animator>();
     }
 
@@ -31,7 +33,7 @@ public class VesselWeapon : MonoBehaviour
     private void Update()
     {
         if(attackDelayCountdown > 0) { attackDelayCountdown -= Time.deltaTime; }
-        if (input.AttackInput && attackDelay)
+        if (inputHandler.AttackInput && attackDelay)
         {
             anim.SetBool("attack", true);
         }
@@ -41,7 +43,10 @@ public class VesselWeapon : MonoBehaviour
     {
         Vector3 offset = new Vector3(attackOffset.x * transform.localScale.x, attackOffset.y, attackOffset.z);
         Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position + offset, attackRadius, enemyMask);
-        // TODO: Deal damage to all enemies
+        foreach(Collider2D enemy in enemies)
+        {
+            enemy.GetComponent<Entity>().Die();
+        }
     }
 
     private void ResetParameter()

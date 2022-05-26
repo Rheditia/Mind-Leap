@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class VesselLocomotion : MonoBehaviour
 {
-    VesselInputHandler input;
+    VesselInputHandler inputHandler;
     Rigidbody2D myRigidbody;
     Animator anim;
 
@@ -20,7 +20,7 @@ public class VesselLocomotion : MonoBehaviour
 
     private void Awake()
     {
-        input = GetComponent<VesselInputHandler>();
+        inputHandler = GetComponent<VesselInputHandler>();
         myRigidbody = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
     }
@@ -35,13 +35,13 @@ public class VesselLocomotion : MonoBehaviour
 
     private void Move()
     {
-        Vector2 newVelocity = new Vector2(input.MoveInput.x * moveVelocity, myRigidbody.velocity.y);
+        Vector2 newVelocity = new Vector2(inputHandler.MoveInput.x * moveVelocity, myRigidbody.velocity.y);
         myRigidbody.velocity = newVelocity;
     }
 
     private void Jump()
     {
-        if (!CheckIfGrounded() || !input.JumpInput) { return; }
+        if (!CheckIfGrounded() || !inputHandler.JumpInput) { return; }
         Vector2 newVelocity = new Vector2(myRigidbody.velocity.x, jumpVelocity);
         myRigidbody.velocity = newVelocity;
     }
