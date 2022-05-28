@@ -7,15 +7,19 @@ public class Entity : MonoBehaviour
 {
     private VesselInputHandler inputHandler;
     private GameObject mind;
+    private TimeManager timeManager;
 
+    [SerializeField] GameObject pointer;
     [SerializeField] float releaseDistance = 2f;
 
     private int vesselLayer;
     private int playerLayer;
+    public bool isAbilityDisabled { get; private set; }
 
     private void Awake()
     {
         inputHandler = GetComponent<VesselInputHandler>();
+        timeManager = FindObjectOfType<TimeManager>();
 
         vesselLayer = LayerMask.NameToLayer("Vessel");
         playerLayer = LayerMask.NameToLayer("Player");
@@ -33,25 +37,35 @@ public class Entity : MonoBehaviour
 
     private void ReleaseMind()
     {
-        if (inputHandler.ReleaseInput && mind != null)
+        Vector3 releaseDirection = new Vector3(inputHandler.MoveInput.x, inputHandler.MoveInput.y, 0).normalized;
+        Vector3 releasePosition;
+        float releaseAngle;
+
+        if (inputHandler.MoveInput == Vector2.zero || inputHandler.MoveInput.y == -1)
         {
+            releasePosition = new Vector3(transform.localScale.x, 0, 0) * releaseDistance;
+            releaseAngle = Mathf.Acos(transform.localScale.x) * Mathf.Rad2Deg;
+        }
+        else
+        {
+            releasePosition = releaseDirection * releaseDistance;
+            releaseAngle = Mathf.Atan2(releaseDirection.y, releaseDirection.x) * Mathf.Rad2Deg;
+        }
+
+        if (inputHandler.ReleaseInputPerformed && mind != null)
+        {
+            timeManager.DoSlowMotion();
+            pointer.SetActive(true);
+            pointer.transform.localScale = transform.localScale;
+            pointer.transform.rotation = Quaternion.Euler(0, 0, releaseAngle);
+            isAbilityDisabled = true;
+        }
+        else if (inputHandler.ReleaseInputCanceled && mind != null)
+        {
+            timeManager.DoNormalTime();
+            pointer.SetActive(false);
             mind.SetActive(true);
             mind.transform.parent = null;
-
-            Vector3 releaseDirection = new Vector3(inputHandler.MoveInput.x, inputHandler.MoveInput.y, 0).normalized;
-            Vector3 releasePosition;
-            float releaseAngle;
-
-            if (inputHandler.MoveInput == Vector2.zero) 
-            {
-                releasePosition = new Vector3(transform.localScale.x, 0, 0) * releaseDistance;
-                releaseAngle = Mathf.Acos(transform.localScale.x) * Mathf.Rad2Deg;
-            }
-            else
-            {
-                releasePosition = releaseDirection * releaseDistance;
-                releaseAngle = Mathf.Atan2(releaseDirection.y, releaseDirection.x) * Mathf.Rad2Deg;
-            }
 
             mind.transform.position = transform.position + releasePosition;
             mind.transform.rotation = Quaternion.Euler(0, 0, releaseAngle);
@@ -60,6 +74,7 @@ public class Entity : MonoBehaviour
             mind = null;
             gameObject.layer = vesselLayer;
             inputHandler.DisableControl();
+            isAbilityDisabled = false;
         }
     }
 
@@ -74,6 +89,7 @@ public class Entity : MonoBehaviour
         {
             mind = collision.gameObject;
 
+            if(mind == null) { return; } // prevent double collision
             mind.transform.SetParent(transform);
             mind.transform.rotation = Quaternion.Euler(0, 0, 0);
 

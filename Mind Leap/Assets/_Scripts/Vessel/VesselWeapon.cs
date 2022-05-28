@@ -6,6 +6,7 @@ using UnityEngine;
 public class VesselWeapon : MonoBehaviour
 {
     VesselInputHandler inputHandler;
+    Entity entity;
     Animator anim;
 
     [Header("Checks")]
@@ -21,13 +22,14 @@ public class VesselWeapon : MonoBehaviour
     private void Awake()
     {
         inputHandler = GetComponent<VesselInputHandler>();
+        entity = GetComponent<Entity>();
         anim = GetComponent<Animator>();
     }
 
     private void Update()
     {
         if(attackDelayCountdown > 0) { attackDelayCountdown -= Time.deltaTime; }
-        if (inputHandler.AttackInput && attackDelay)
+        if (inputHandler.AttackInput && attackDelay && !entity.isAbilityDisabled)
         {
             anim.SetBool("attack", true);
         }
