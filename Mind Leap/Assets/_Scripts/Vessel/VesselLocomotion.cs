@@ -7,6 +7,7 @@ public class VesselLocomotion : MonoBehaviour
 {
     VesselInputHandler inputHandler;
     Entity entity;
+    VesselWeapon weapon;
     Rigidbody2D myRigidbody;
     Animator anim;
 
@@ -23,6 +24,7 @@ public class VesselLocomotion : MonoBehaviour
     {
         inputHandler = GetComponent<VesselInputHandler>();
         entity = GetComponent<Entity>();
+        weapon = GetComponent<VesselWeapon>();
         myRigidbody = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
     }
@@ -37,14 +39,30 @@ public class VesselLocomotion : MonoBehaviour
 
     private void Move()
     {
+        if (weapon.isAttacking && CheckIfGrounded()) 
+        {
+            myRigidbody.velocity = new Vector2(0, myRigidbody.velocity.y);
+            return; 
+        }
+        
+        // when releasing mind the rigidbody velocity change to a very small number and the moving animation started, cause is unknown
+        if (entity.isAbilityDisabled)
+        {
+            if (CheckIfGrounded()) { myRigidbody.velocity = new Vector2(0, myRigidbody.velocity.y); }
+            else if (!CheckIfGrounded()) { myRigidbody.velocity = myRigidbody.velocity; }
+            return;
+        }
+
         Vector2 newVelocity = new Vector2(inputHandler.MoveInput.x * moveVelocity, myRigidbody.velocity.y);
         myRigidbody.velocity = newVelocity;
-        // when releasing mind the rigidbody velocity change to a very small number and the moving animation started, cause is unknown
-        if (entity.isAbilityDisabled && CheckIfGrounded()) { myRigidbody.velocity = new Vector2(0, myRigidbody.velocity.y); }
     }
 
     private void Jump()
     {
+        if (weapon != null)
+        {
+            if (weapon.isAttacking) { return; }
+        }
         if (!CheckIfGrounded() || !inputHandler.JumpInput || entity.isAbilityDisabled) { return; }
         Vector2 newVelocity = new Vector2(myRigidbody.velocity.x, jumpVelocity);
         myRigidbody.velocity = newVelocity;
@@ -59,7 +77,7 @@ public class VesselLocomotion : MonoBehaviour
         else { anim.SetBool("jump", false); }
     }
 
-    private bool CheckIfGrounded()
+    public bool CheckIfGrounded()
     {
         return Physics2D.OverlapBox(transform.position + groundCheckOffset, groundCheckSize, 0, groundMask);
     }

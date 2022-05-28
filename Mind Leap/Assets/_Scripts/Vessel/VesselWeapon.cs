@@ -7,6 +7,7 @@ public class VesselWeapon : MonoBehaviour
 {
     VesselInputHandler inputHandler;
     Entity entity;
+    VesselLocomotion locomotion;
     Animator anim;
 
     [Header("Checks")]
@@ -18,20 +19,23 @@ public class VesselWeapon : MonoBehaviour
     [SerializeField] float attackDelayDuration = 1f;
     private float attackDelayCountdown;
     private bool attackDelay => attackDelayCountdown <= 0;
+    public bool isAttacking { get; private set; }
 
     private void Awake()
     {
         inputHandler = GetComponent<VesselInputHandler>();
         entity = GetComponent<Entity>();
+        locomotion = GetComponent<VesselLocomotion>();
         anim = GetComponent<Animator>();
     }
 
     private void Update()
     {
         if(attackDelayCountdown > 0) { attackDelayCountdown -= Time.deltaTime; }
-        if (inputHandler.AttackInput && attackDelay && !entity.isAbilityDisabled)
+        if (inputHandler.AttackInput && attackDelay && !entity.isAbilityDisabled && locomotion.CheckIfGrounded())
         {
             anim.SetBool("attack", true);
+            isAttacking = true;
         }
     }
 
@@ -49,6 +53,7 @@ public class VesselWeapon : MonoBehaviour
     {
         attackDelayCountdown = attackDelayDuration;
         anim.SetBool("attack", false);
+        isAttacking = false;
     }
 
     private void OnDrawGizmos()
