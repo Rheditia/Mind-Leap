@@ -258,8 +258,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveVelocity: 5
   jumpVelocity: 11
+  patrolDuration: 1
+  patrolDelayDuration: 4
   groundCheckOffset: {x: 0, y: -0.55, z: 0}
   groundCheckSize: {x: 0.45, y: 0.25}
+  ledgeCheckOffset: {x: 0.5, y: -0.55, z: 0}
+  ledgeCheckDistance: 0.25
+  wallCheckOffset: {x: 0, y: -0.5, z: 0}
+  wallCheckDistance: 0.5
   groundMask:
     serializedVersion: 2
     m_Bits: 64

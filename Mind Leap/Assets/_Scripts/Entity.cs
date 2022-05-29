@@ -31,6 +31,7 @@ public class Entity : MonoBehaviour
     private void Start()
     {
         inputHandler.DisableControl();
+        if (mindEntity == null) { isAbilityDisabled = true; }
     }
 
     private void Update()
@@ -85,7 +86,6 @@ public class Entity : MonoBehaviour
             mindEntity = null;
             gameObject.layer = vesselLayer;
             inputHandler.DisableControl();
-            isAbilityDisabled = false;
         }
     }
 
@@ -110,6 +110,7 @@ public class Entity : MonoBehaviour
             mindEntity.SetActive(false);
             gameObject.layer = playerLayer;
             inputHandler.EnableControl();
+            isAbilityDisabled = false;
         }
     }
 }
