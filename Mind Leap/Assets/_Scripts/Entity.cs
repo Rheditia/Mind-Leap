@@ -6,7 +6,8 @@ using UnityEngine;
 public class Entity : MonoBehaviour
 {
     private VesselInputHandler inputHandler;
-    private GameObject mind;
+    private GameObject mindEntity;
+    private Mind mind;
     private TimeManager timeManager;
 
     [SerializeField] GameObject pointer;
@@ -52,7 +53,7 @@ public class Entity : MonoBehaviour
             releaseAngle = Mathf.Atan2(releaseDirection.y, releaseDirection.x) * Mathf.Rad2Deg;
         }
 
-        if (inputHandler.ReleaseInputPerformed && mind != null)
+        if (inputHandler.ReleaseInputPerformed && mindEntity != null)
         {
             timeManager.DoSlowMotion();
             pointer.SetActive(true);
@@ -60,18 +61,21 @@ public class Entity : MonoBehaviour
             pointer.transform.rotation = Quaternion.Euler(0, 0, releaseAngle);
             isAbilityDisabled = true;
         }
-        else if (inputHandler.ReleaseInputCanceled && mind != null)
+        else if (inputHandler.ReleaseInputCanceled && mindEntity != null)
         {
             timeManager.DoNormalTime();
             pointer.SetActive(false);
-            mind.SetActive(true);
-            mind.transform.parent = null;
+            mindEntity.SetActive(true);
+            mindEntity.transform.parent = null;
 
-            mind.transform.position = transform.position + releasePosition;
-            mind.transform.rotation = Quaternion.Euler(0, 0, releaseAngle);
-            mind.transform.localScale = Vector3.one; // when posessing vessel with x scale : -1, the mind scale will change as well
+            mindEntity.transform.position = transform.position + releasePosition;
+            mindEntity.transform.rotation = Quaternion.Euler(0, 0, releaseAngle);
+            mindEntity.transform.localScale = Vector3.one; // when posessing vessel with x scale : -1, the mind scale will change as well
 
-            mind = null;
+            mind.ResetLifeCounter();
+            mind.IsPossessing = false;
+
+            mindEntity = null;
             gameObject.layer = vesselLayer;
             inputHandler.DisableControl();
             isAbilityDisabled = false;
@@ -87,13 +91,16 @@ public class Entity : MonoBehaviour
     {
         if (collision.collider.CompareTag("Player"))
         {
-            mind = collision.gameObject;
+            mindEntity = collision.gameObject;
+            if(mindEntity == null) { return; } // prevent double collision
 
-            if(mind == null) { return; } // prevent double collision
-            mind.transform.SetParent(transform);
-            mind.transform.rotation = Quaternion.Euler(0, 0, 0);
+            mind = mindEntity.GetComponent<Mind>();
+            if (mind != null) { mind.IsPossessing = true; }
 
-            mind.SetActive(false);
+            mindEntity.transform.SetParent(transform);
+            mindEntity.transform.rotation = Quaternion.Euler(0, 0, 0);
+
+            mindEntity.SetActive(false);
             gameObject.layer = playerLayer;
             inputHandler.EnableControl();
         }
