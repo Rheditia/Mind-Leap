@@ -45,11 +45,9 @@ public class VesselLocomotion : MonoBehaviour
             return; 
         }
         
-        // when releasing mind the rigidbody velocity change to a very small number and the moving animation started, cause is unknown
-        if (entity.isAbilityDisabled)
+        if (entity.isAbilityDisabled && !CheckIfGrounded())
         {
-            if (CheckIfGrounded()) { myRigidbody.velocity = new Vector2(0, myRigidbody.velocity.y); }
-            else if (!CheckIfGrounded()) { myRigidbody.velocity = myRigidbody.velocity; }
+            myRigidbody.velocity = myRigidbody.velocity;
             return;
         }
 

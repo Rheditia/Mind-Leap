@@ -1,10 +1,10 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Mind : MonoBehaviour
 {
+    [SerializeField] Image timer;
+
     [SerializeField] float mindLifeDuration = 3f;
     private float mindLifeCounter;
     private bool isPossessing;
@@ -21,6 +21,7 @@ public class Mind : MonoBehaviour
     private void Update()
     {
         LifeCountdown();
+        timer.fillAmount = mindLifeCounter / mindLifeDuration;
     }
 
     private void LifeCountdown()
