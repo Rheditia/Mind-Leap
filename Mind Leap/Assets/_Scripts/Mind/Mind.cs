@@ -30,7 +30,7 @@ public class Mind : MonoBehaviour
         else { Die(); }
     }
 
-    private void Die()
+    public void Die()
     {
         Destroy(gameObject);
     }

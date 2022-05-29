@@ -6,9 +6,10 @@ using UnityEngine;
 public class Entity : MonoBehaviour
 {
     private VesselInputHandler inputHandler;
+    private BoxCollider2D myCollider;
+    private TimeManager timeManager;
     private GameObject mindEntity;
     private Mind mind;
-    private TimeManager timeManager;
 
     [SerializeField] GameObject pointer;
     [SerializeField] float releaseDistance = 2f;
@@ -20,6 +21,7 @@ public class Entity : MonoBehaviour
     private void Awake()
     {
         inputHandler = GetComponent<VesselInputHandler>();
+        myCollider = GetComponent<BoxCollider2D>();
         timeManager = FindObjectOfType<TimeManager>();
 
         vesselLayer = LayerMask.NameToLayer("Vessel");
@@ -33,6 +35,11 @@ public class Entity : MonoBehaviour
 
     private void Update()
     {
+        if (myCollider.IsTouchingLayers(LayerMask.GetMask("Hazard"))) 
+        { 
+            if(mindEntity != null) { mind.Die(); }
+            Die(); 
+        }
         ReleaseMind();
     }
 
