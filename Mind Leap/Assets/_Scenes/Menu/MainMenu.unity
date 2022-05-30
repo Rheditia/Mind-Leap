@@ -1599,6 +1599,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 8014278564525994292, guid: 9037c7a3a8d4d2f4399d8dcb35575296, type: 3}
+      propertyPath: m_Volume
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 8014278564525994298, guid: 9037c7a3a8d4d2f4399d8dcb35575296, type: 3}
       propertyPath: m_Name
       value: MenuAudio

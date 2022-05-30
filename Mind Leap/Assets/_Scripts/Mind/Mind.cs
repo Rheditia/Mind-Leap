@@ -15,6 +15,11 @@ public class Mind : MonoBehaviour
     {
         set { isPossessing = value; }
     }
+    private bool isExiting;
+    public bool IsExiting
+    {
+        set { isExiting = value; }
+    }
 
     private void Awake()
     {
@@ -37,13 +42,14 @@ public class Mind : MonoBehaviour
 
     private void LifeCountdown()
     {
-        if (isPossessing) { return; }
+        if (isPossessing || isExiting) { return; }
         if (mindLifeCounter > 0) { mindLifeCounter -= Time.deltaTime; }
         else { Die(); }
     }
 
     public void Die()
     {
+        if (isExiting) { return; }
         audioPlayer.PlayVanishClip();
         gameManager.ResetLevel();
         Destroy(gameObject);

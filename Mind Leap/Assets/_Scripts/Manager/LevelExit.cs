@@ -11,7 +11,7 @@ public class LevelExit : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            collision.GetComponent<Mind>().IsPossessing = true;
+            collision.GetComponent<Mind>().IsExiting = true;
             StartCoroutine(LoadNextLevel());
         }
     }
