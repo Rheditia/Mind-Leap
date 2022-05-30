@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class Mind : MonoBehaviour
 {
+    CircleCollider2D myCollider;
     [SerializeField] Image timer;
 
     [SerializeField] float mindLifeDuration = 3f;
@@ -13,6 +14,11 @@ public class Mind : MonoBehaviour
         set { isPossessing = value; }
     }
 
+    private void Awake()
+    {
+        myCollider = GetComponent<CircleCollider2D>();
+    }
+
     private void Start()
     {
         mindLifeCounter = mindLifeDuration;
@@ -20,6 +26,7 @@ public class Mind : MonoBehaviour
 
     private void Update()
     {
+        if (myCollider.IsTouchingLayers(LayerMask.GetMask("Hazard", "Platform"))) { Die(); }
         LifeCountdown();
         timer.fillAmount = mindLifeCounter / mindLifeDuration;
     }
