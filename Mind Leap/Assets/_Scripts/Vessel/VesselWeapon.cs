@@ -47,6 +47,7 @@ public class VesselWeapon : MonoBehaviour
         {
             enemy.GetComponent<Entity>().Die();
         }
+        entity.AudioPlayer.PlayAttackClip();
     }
 
     private void ResetParameter()

@@ -25,10 +25,11 @@ public class LevelExit : MonoBehaviour
     {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         int nextSceneIndex = currentSceneIndex + 1;
+        int endSceneIndex = SceneManager.GetSceneByName("GameOver").buildIndex;
 
-        if (nextSceneIndex == SceneManager.sceneCountInBuildSettings)
+        if (nextSceneIndex == endSceneIndex)
         {
-            nextSceneIndex = 0;
+            FindObjectOfType<AudioPlayer>().ResetAudio();
         }
         SceneManager.LoadScene(nextSceneIndex);
     }

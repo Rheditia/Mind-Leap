@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] float resetDelay = 1f;
     [SerializeField] GameObject exitBlock;
 
     private int vesselCount;
@@ -31,6 +32,12 @@ public class GameManager : MonoBehaviour
 
     public void ResetLevel()
     {
+        StartCoroutine(Reset());
+    }
+
+    IEnumerator Reset()
+    {
+        yield return new WaitForSecondsRealtime(resetDelay);
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentSceneIndex);
     }

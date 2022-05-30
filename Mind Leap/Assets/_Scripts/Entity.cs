@@ -5,19 +5,19 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
-    private GameManager gameManager;
-    private VesselInputHandler inputHandler;
-    private BoxCollider2D myCollider;
-    private TimeManager timeManager;
-    private GameObject mindEntity;
-    private Mind mind;
+    GameManager gameManager;
+    VesselInputHandler inputHandler;
+    BoxCollider2D myCollider;
+    TimeManager timeManager;
+    AudioPlayer audioPlayer;
+    GameObject mindEntity;
+    Mind mind;
 
     [SerializeField] GameObject pointer;
     [SerializeField] float releaseDistance = 2f;
 
-    private int vesselLayer;
-    private int playerLayer;
     public bool isAbilityDisabled { get; private set; }
+    public AudioPlayer AudioPlayer => audioPlayer;
 
     private void Awake()
     {
@@ -25,9 +25,7 @@ public class Entity : MonoBehaviour
         inputHandler = GetComponent<VesselInputHandler>();
         myCollider = GetComponent<BoxCollider2D>();
         timeManager = FindObjectOfType<TimeManager>();
-
-        vesselLayer = LayerMask.NameToLayer("Vessel");
-        playerLayer = LayerMask.NameToLayer("Player");
+        audioPlayer = FindObjectOfType<AudioPlayer>();
     }
 
     private void Start()
@@ -85,7 +83,6 @@ public class Entity : MonoBehaviour
             mind.IsPossessing = false;
 
             mindEntity = null;
-            gameObject.layer = vesselLayer;
             inputHandler.DisableControl();
         }
     }
@@ -94,6 +91,7 @@ public class Entity : MonoBehaviour
     {
         if(mindEntity != null) { mind.Die(); }
         gameManager.DecreaseCount();
+        audioPlayer.PlayDieClip();
         Destroy(gameObject);
     }
 
@@ -111,7 +109,6 @@ public class Entity : MonoBehaviour
             mindEntity.transform.rotation = Quaternion.Euler(0, 0, 0);
 
             mindEntity.SetActive(false);
-            gameObject.layer = playerLayer;
             inputHandler.EnableControl();
             isAbilityDisabled = false;
         }

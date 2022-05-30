@@ -281,8 +281,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd6c161161178174090e70451663c99d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackOffset: {x: 0.35, y: 0.25, z: 0}
-  attackRadius: 0.45
+  attackOffset: {x: 0.55, y: 0.25, z: 0}
+  attackRadius: 0.3
   enemyMask:
     serializedVersion: 2
     m_Bits: 128

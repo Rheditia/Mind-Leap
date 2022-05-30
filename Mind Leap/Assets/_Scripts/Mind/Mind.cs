@@ -4,6 +4,7 @@ using UnityEngine.UI;
 public class Mind : MonoBehaviour
 {
     GameManager gameManager;
+    AudioPlayer audioPlayer;
     CircleCollider2D myCollider;
     [SerializeField] Image timer;
 
@@ -18,6 +19,7 @@ public class Mind : MonoBehaviour
     private void Awake()
     {
         gameManager = FindObjectOfType<GameManager>();
+        audioPlayer = FindObjectOfType<AudioPlayer>();
         myCollider = GetComponent<CircleCollider2D>();
     }
 
@@ -42,6 +44,7 @@ public class Mind : MonoBehaviour
 
     public void Die()
     {
+        audioPlayer.PlayVanishClip();
         gameManager.ResetLevel();
         Destroy(gameObject);
     }
