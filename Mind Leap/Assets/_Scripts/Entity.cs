@@ -66,7 +66,6 @@ public class Entity : MonoBehaviour
             pointer.SetActive(true);
             pointer.transform.localScale = transform.localScale;
             pointer.transform.rotation = Quaternion.Euler(0, 0, releaseAngle);
-            isAbilityDisabled = true;
         }
         else if (inputHandler.ReleaseInputCanceled && mindEntity != null)
         {
@@ -81,6 +80,7 @@ public class Entity : MonoBehaviour
 
             mind.ResetLifeCounter();
             mind.IsPossessing = false;
+            isAbilityDisabled = true;
 
             mindEntity = null;
             inputHandler.DisableControl();
