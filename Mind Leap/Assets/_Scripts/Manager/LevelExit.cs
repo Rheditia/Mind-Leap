@@ -25,9 +25,8 @@ public class LevelExit : MonoBehaviour
     {
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         int nextSceneIndex = currentSceneIndex + 1;
-        int endSceneIndex = SceneManager.GetSceneByName("GameOver").buildIndex;
 
-        if (nextSceneIndex == endSceneIndex)
+        if (nextSceneIndex == SceneManager.sceneCountInBuildSettings - 2)
         {
             FindObjectOfType<AudioPlayer>().ResetAudio();
         }
