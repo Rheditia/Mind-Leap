@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Entity : MonoBehaviour
 {
+    private GameManager gameManager;
     private VesselInputHandler inputHandler;
     private BoxCollider2D myCollider;
     private TimeManager timeManager;
@@ -20,6 +21,7 @@ public class Entity : MonoBehaviour
 
     private void Awake()
     {
+        gameManager = FindObjectOfType<GameManager>();
         inputHandler = GetComponent<VesselInputHandler>();
         myCollider = GetComponent<BoxCollider2D>();
         timeManager = FindObjectOfType<TimeManager>();
@@ -38,7 +40,6 @@ public class Entity : MonoBehaviour
     {
         if (myCollider.IsTouchingLayers(LayerMask.GetMask("Hazard"))) 
         { 
-            if(mindEntity != null) { mind.Die(); }
             Die(); 
         }
         ReleaseMind();
@@ -91,6 +92,8 @@ public class Entity : MonoBehaviour
 
     public void Die()
     {
+        if(mindEntity != null) { mind.Die(); }
+        gameManager.DecreaseCount();
         Destroy(gameObject);
     }
 

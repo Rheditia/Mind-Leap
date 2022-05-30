@@ -3,6 +3,7 @@ using UnityEngine.UI;
 
 public class Mind : MonoBehaviour
 {
+    GameManager gameManager;
     CircleCollider2D myCollider;
     [SerializeField] Image timer;
 
@@ -16,6 +17,7 @@ public class Mind : MonoBehaviour
 
     private void Awake()
     {
+        gameManager = FindObjectOfType<GameManager>();
         myCollider = GetComponent<CircleCollider2D>();
     }
 
@@ -40,6 +42,7 @@ public class Mind : MonoBehaviour
 
     public void Die()
     {
+        gameManager.ResetLevel();
         Destroy(gameObject);
     }
 
